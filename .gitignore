@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+npm-debug.log*
+
+# File Word mẫu để test (binary, không phải mã nguồn)
+143976.doc
+*.doc
+*.docx

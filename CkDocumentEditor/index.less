@@ -1,0 +1,251 @@
+.ck-document-editor {
+  --ck-editable-height: 500px;
+  position: relative;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: #fff;
+
+  .ck.ck-editor {
+    border: 0;
+  }
+
+  .ck.ck-toolbar {
+    flex-wrap: wrap !important;
+    border: 0;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fafafa;
+  }
+
+  .ck.ck-toolbar .ck-toolbar__items {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .ck.ck-toolbar .ck-provision-heading-dropdown,
+  .ck.ck-toolbar .ck-font-family-dropdown,
+  .ck.ck-toolbar .ck-font-size-dropdown {
+    margin: 0 2px;
+  }
+
+  .ck.ck-toolbar .ck-provision-heading-dropdown > .ck-button.ck-dropdown__button,
+  .ck.ck-toolbar .ck-font-family-dropdown > .ck-button.ck-dropdown__button,
+  .ck.ck-toolbar .ck-font-size-dropdown > .ck-button.ck-dropdown__button {
+    min-height: 28px;
+    padding: 0 8px;
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    background: #fff;
+    color: #344054;
+    box-shadow: none;
+
+    &:hover,
+    &.ck-on,
+    &:focus {
+      background: #fff;
+      border-color: #98a2b3;
+    }
+  }
+
+  .ck.ck-toolbar
+    .ck-provision-heading-dropdown
+    > .ck-button.ck-dropdown__button
+    .ck-button__label {
+    width: 96px;
+    max-width: 96px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 28px;
+  }
+
+  .ck.ck-toolbar
+    .ck-font-family-dropdown
+    > .ck-button.ck-dropdown__button
+    .ck-button__label {
+    width: 92px;
+    max-width: 92px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 28px;
+  }
+
+  .ck.ck-toolbar
+    .ck-font-size-dropdown
+    > .ck-button.ck-dropdown__button
+    .ck-button__label {
+    width: 42px;
+    max-width: 42px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 28px;
+  }
+
+  .ck.ck-toolbar
+    .ck-provision-heading-dropdown
+    .ck-dropdown__panel
+    .ck-list
+    .ck-button {
+    min-width: 140px;
+  }
+
+  .ck-content > p {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 22px;
+  }
+
+  .ck-editor__editable_inline {
+    height: var(--ck-editable-height) !important;
+    min-height: var(--ck-editable-height) !important;
+    max-height: none !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .ck-content {
+    .prov-part,
+    .prov-chapter,
+    .prov-section,
+    .prov-subsection {
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .prov-article {
+      font-weight: 700;
+    }
+
+    ins {
+      text-decoration: none;
+      color: #00652a;
+      background-color: #dbf6e8;
+    }
+
+    del {
+      text-decoration: line-through;
+      color: #a80a12;
+      background-color: #feeeed;
+    }
+  }
+
+  &.is-resizing {
+    user-select: none;
+
+    .ck-editor__editable_inline {
+      pointer-events: none;
+      will-change: height;
+    }
+  }
+
+  .ck-document-editor__placeholder {
+    background: #fff;
+  }
+
+  .ck-document-editor__statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 28px;
+    padding: 0 8px 0 12px;
+    border-top: 1px solid #e5e7eb;
+    background: #f5f5f5;
+    color: #6b7280;
+    font-size: 12px;
+  }
+
+  .ck-document-editor__status-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ck-document-editor__resize {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 0;
+    background:
+      linear-gradient(135deg, transparent 45%, #8c8c8c 45%, #8c8c8c 55%, transparent 55%)
+        3px 3px / 10px 10px no-repeat,
+      linear-gradient(135deg, transparent 45%, #8c8c8c 45%, #8c8c8c 55%, transparent 55%)
+        6px 6px / 7px 7px no-repeat,
+      linear-gradient(135deg, transparent 45%, #8c8c8c 45%, #8c8c8c 55%, transparent 55%)
+        9px 9px / 4px 4px no-repeat;
+    cursor: nwse-resize;
+    flex-shrink: 0;
+  }
+}
+
+// Panel các dropdown trên toolbar: cuộn được và gọn như TinyMCE, kể cả khi bật fullscreen
+// (lúc đó CK dời editor ra ngoài .ck-document-editor).
+.ck.ck-toolbar .ck-dropdown__panel > .ck-list {
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.ck.ck-toolbar .ck-dropdown__panel > .ck-list .ck-button {
+  min-height: 28px;
+  padding: 2px 12px;
+  font-size: 13px;
+}
+
+.ck-document-editor-help {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+
+  &__dialog {
+    width: min(520px, calc(100vw - 32px));
+    max-height: 80vh;
+    overflow: auto;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px 20px 20px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  &__close {
+    border: 0;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      border: 1px solid #e5e7eb;
+      padding: 6px 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #f8fafc;
+    }
+  }
+}

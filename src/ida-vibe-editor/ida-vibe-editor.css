@@ -1,0 +1,52 @@
+/* Vỏ IdaVibeEditor. Các class nội dung (section-block, obj-picker, sp-hl...)
+   dùng chung từ index.css. */
+.ida-editor {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Header dính khi cuộn trang, chứa hành động + nút Lưu */
+.ida-editor__header {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  border-radius: 8px 8px 0 0;
+}
+.ida-editor__title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Vùng nội dung cuộn, giới hạn chiều cao qua prop maxHeight */
+.ida-editor__body {
+  overflow: auto;
+  padding: 4px;
+}
+
+/* Danh sách lỗi gọn */
+.ida-editor__issues {
+  border-top: 1px solid #f0f0f0;
+  padding: 4px 12px;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #fbfbfb;
+}
+
+/* Footer chứa nút Lưu */
+.ida-editor__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 0 0 8px 8px;
+}
