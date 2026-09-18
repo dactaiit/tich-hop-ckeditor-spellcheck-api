@@ -92,7 +92,8 @@ export async function processUploaded(files, opts = {}) {
       const buf = byRel.get(`${doc.name}/${name}`)
       if (!buf) { errors.push({ file: name, error: 'Thiếu buffer phụ lục' }); continue }
       try {
-        const { section } = await convertBufferToSection(buf, name)
+        // autoFitTables: mọi bảng -> width 100% + tự co cột theo nội dung.
+        const { section } = await convertBufferToSection(buf, name, { autoFitTables: true })
         if (has && force) html = removeSectionBySource(html, name)
         sections += section + '\n'
         appended.push(name)

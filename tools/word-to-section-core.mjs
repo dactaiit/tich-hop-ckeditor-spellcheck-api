@@ -72,6 +72,39 @@ export function scopeCss(css, scope) {
   return out
 }
 
+// Bỏ khai báo width/min-width/max-width khỏi 1 chuỗi style inline.
+const stripWidthDecls = (style) =>
+  style
+    .split(';')
+    .map((s) => s.trim())
+    .filter((s) => s && !/^(width|min-width|max-width)\s*:/i.test(s))
+    .join('; ')
+
+// Bỏ width="..." và width trong style của 1 thẻ mở.
+const dropTagWidth = (tag) =>
+  tag
+    .replace(/\swidth\s*=\s*"[^"]*"/gi, '')
+    .replace(/\sstyle\s*=\s*"([^"]*)"/gi, (_m, v) => {
+      const s = stripWidthDecls(v)
+      return s ? ` style="${s}"` : ''
+    })
+
+// Chuẩn hoá mọi <table> sang "auto fit contents + full 100%": bảng rộng 100%,
+// table-layout:auto (cột tự dàn theo nội dung), bỏ width cố định ở table/col/td/th.
+export function autoFitTables(html) {
+  if (!html) return html
+  html = html.replace(/<table\b[^>]*>/gi, (tag) => {
+    let t = dropTagWidth(tag)
+    const add = 'width: 100%; table-layout: auto'
+    if (/\sstyle\s*=\s*"/i.test(t)) t = t.replace(/\sstyle\s*=\s*"/i, ` style="${add}; `)
+    else t = t.replace(/<table\b/i, `<table style="${add}"`)
+    return t
+  })
+  html = html.replace(/<col\b[^>]*>/gi, dropTagWidth)
+  html = html.replace(/<t[dh]\b[^>]*>/gi, dropTagWidth)
+  return html
+}
+
 // Nhúng <img src="file"> thành data URI, hoặc trỏ sang thư mục assets.
 async function rewriteImages(html, workDir, { assetsDir, assetsPrefix }) {
   const srcs = new Set()
@@ -150,6 +183,7 @@ export async function convertWordToSection(inputPath, opts = {}) {
       assetsPrefix = (opts.assetsPrefix || '').replace(/\\/g, '/')
     }
     bodyHtml = await rewriteImages(bodyHtml, workDir, { assetsDir, assetsPrefix })
+    if (opts.autoFitTables) bodyHtml = autoFitTables(bodyHtml)
 
     const scopedCss = scopeCss(styleInner, scope)
     const section =

@@ -7,21 +7,49 @@ const DEFAULT_SPELL_API = import.meta.env.VITE_SPELL_API || '/spell'
 // Trả về SpellCheckResponse.
 export async function spellCheck(text, topK = 3, apiBase) {
   const base = apiBase || DEFAULT_SPELL_API
-  const res = await fetch(`${base}/v1/spell-check`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, top_k: topK }),
-  })
+  const url = `${base}/v1/spell-check`
+
+  // 1) Lỗi mạng/CORS/không tới được endpoint -> fetch reject "Failed to fetch".
+  //    Đổi thành thông báo rõ nguyên nhân + cách khắc phục.
+  let res
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, top_k: topK }),
+    })
+  } catch (e) {
+    throw new Error(
+      `Không gọi được API kiểm tra chính tả (${url}). ` +
+        `Kiểm tra: (a) API còn sống, (b) proxy "/spell" đang chạy (npm run dev / dev:all), ` +
+        `hoặc đặt biến VITE_SPELL_API trỏ tới endpoint thật. Chi tiết: ${e.message}`
+    )
+  }
+
+  const contentType = res.headers.get('content-type') || ''
+
   if (!res.ok) {
     let msg = `HTTP ${res.status}`
-    try {
-      const j = await res.json()
-      if (j?.detail) msg = typeof j.detail === 'string' ? j.detail : JSON.stringify(j.detail)
-    } catch {
-      // giữ msg mặc định
+    if (contentType.includes('application/json')) {
+      try {
+        const j = await res.json()
+        if (j?.detail) msg = typeof j.detail === 'string' ? j.detail : JSON.stringify(j.detail)
+      } catch {
+        // giữ msg mặc định
+      }
     }
     throw new Error(msg)
   }
+
+  // 2) Response 200 nhưng KHÔNG phải JSON: thường do "/spell" chưa được proxy nên
+  //    static server trả về index.html (SPA fallback). Báo rõ thay vì lỗi parse khó hiểu.
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      `API chính tả trả về không phải JSON (content-type: ${contentType || 'không rõ'}). ` +
+        `Nhiều khả năng "/spell" chưa được proxy tới API — kiểm tra cấu hình proxy hoặc VITE_SPELL_API.`
+    )
+  }
+
   return res.json()
 }
 

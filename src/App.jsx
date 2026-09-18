@@ -22,6 +22,7 @@ import BlockEditor from './pages/BlockEditor.jsx'
 import SectionEditor from './pages/SectionEditor.jsx'
 import DocComposer from './pages/DocComposer.jsx'
 import SpellCheck from './pages/SpellCheck.jsx'
+import TinySpellCheck from './pages/TinySpellCheck.jsx'
 import FolderBatch from './pages/FolderBatch.jsx'
 
 const { Header, Sider, Content } = Layout
@@ -35,6 +36,7 @@ const menuItems = [
   { key: '/section-editor', icon: <LayoutOutlined />, label: 'Sửa theo section' },
   { key: '/doc-composer', icon: <FileWordOutlined />, label: 'IdaVibeEditor (demo)' },
   { key: '/spell-check', icon: <CheckCircleOutlined />, label: 'Kiểm tra chính tả' },
+  { key: '/tiny-spell-check', icon: <CheckCircleOutlined />, label: 'Chính tả trên TinyMCE' },
   { key: '/settings', icon: <SettingOutlined />, label: 'Cài đặt' },
 ]
 
@@ -98,6 +100,7 @@ export default function App() {
             <Route path="/section-editor" element={<SectionEditor />} />
             <Route path="/doc-composer" element={<DocComposer />} />
             <Route path="/spell-check" element={<SpellCheck />} />
+            <Route path="/tiny-spell-check" element={<TinySpellCheck />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </Content>

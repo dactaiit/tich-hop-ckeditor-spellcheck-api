@@ -25,6 +25,26 @@ npm run dev:all    # chạy cả hai cùng lúc
 
 Mặc định mở tại http://localhost:3000
 
+## Kiểm tra chính tả — lưu ý về proxy (tránh lỗi "Failed to fetch")
+
+API chính tả (`124.197.20.172:8760`) **không có CORS** nên frontend gọi qua đường dẫn
+tương đối `/spell`, và **cần một proxy** chuyển tiếp. Proxy đã cấu hình trong
+`vite.config.js` cho **cả `dev` và `preview`**. Do đó:
+
+- `npm run dev` hoặc `npm run preview`: hoạt động (đã có proxy `/spell`, `/api`).
+- Serve thư mục `dist` bằng host tĩnh khác (nginx, `serve`, mở file trực tiếp…):
+  **KHÔNG có proxy** → gọi chính tả sẽ báo *"Không gọi được API kiểm tra chính tả…"*.
+  Khi đó phải: (a) cấu hình reverse proxy `/spell → http://124.197.20.172:8760`
+  (kèm rewrite bỏ tiền tố `/spell`), **hoặc** (b) build với biến `VITE_SPELL_API`
+  trỏ thẳng tới endpoint có CORS, ví dụ:
+
+  ```bash
+  VITE_SPELL_API=https://spell.example.com npm run build
+  ```
+
+> `spellCheck()` nay báo lỗi rõ ràng khi không gọi được API hoặc endpoint trả về
+> không phải JSON (thường do thiếu proxy) thay vì "Failed to fetch" khó hiểu.
+
 ## Import file trong trang "Test tích hợp"
 
 | Định dạng | Cách xử lý | Độ trung thực |
